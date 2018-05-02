@@ -38,6 +38,21 @@ class Routes extends Component {
   }
 }
 
+/*
+      <div className="wrapper">
+        {console.log('ISLOGGEDIN', isLoggedIn)}
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} />
+
+          {(isLoggedIn) ? (<Redirect from="/" to={`/${localStorage.getItem('username')}/dashboard`} />) :
+          (<Redirect from="/" to="/login" />)}
+        </Switch>
+      </div>
+    );
+  }
+*/
+
 const mapStateToProps = (state) => {
   return {
     auth: state.auth
@@ -45,3 +60,5 @@ const mapStateToProps = (state) => {
 }
 
 export default withRouter(connect(mapStateToProps)(Routes))
+
+
