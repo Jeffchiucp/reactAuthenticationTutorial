@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import serverPath from '../paths';
 import axios from 'axios';
-import { instanceOf } from 'prop-types';
-import { Cookies, withCookies } from 'react-cookie';
+import Input from './Input';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as Actions from '../actions/auth';
 
 class Login extends Component {
-
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  };
 
   constructor(props) {
     super(props)
     this.sendSweetAlert = this.sendSweetAlert.bind(this)
-    this.setTokenCookie = this.setTokenCookie.bind(this)
     this.submitForm = this.submitForm.bind(this)
 
     this.state = {
@@ -29,16 +26,6 @@ class Login extends Component {
     }
   }
 
-  componentWillMount() {
-    const { cookies } = this.props;
-  }
-
-  setTokenCookie(token) {
-    const { cookies } = this.props;
-    cookies.set('RubricsApp', token, { path: '/'} );
-    console.log(cookies.get('RubricsApp'));
-  }
-
   refresh() {
     this.setState({loaded: true})
   }
@@ -50,19 +37,7 @@ class Login extends Component {
   }
 
   submitForm() {
-    axios.post(`${serverPath}/login`, this.state.loginForm)
-    .then(response => {
-      console.log("Here is the Response...",response)
-      if (response.status === 200) {
-        const user = response.data.user
-        console.log(response.data)
-        {this.setTokenCookie(response.data.token)}
-        this.props.history.push("/");
-      }
-    })
-    .catch(error => {
-      console.log('error!', error)
-    })
+    this.props.loginUser(this.state.loginForm);
   }
 
   sendSweetAlert() {
@@ -71,11 +46,9 @@ class Login extends Component {
   }
 
 
-
   render() {
     return (
       <div className="off-canvas-sidebar">
-        {console.log(this.state)}
         <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
           <div className="container">
             <div className="navbar-header">
@@ -131,6 +104,7 @@ class Login extends Component {
                                   <i className="fa fa-google-plus"></i>
                                   </a>
                                   </div>*/}
+
                                 </div>
                                 <p className="category text-center">Don't have an account?</p>
                                 <p className="category text-center">
@@ -208,4 +182,14 @@ class Login extends Component {
               }
             }
 
-            export default withCookies(Login);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(Actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
