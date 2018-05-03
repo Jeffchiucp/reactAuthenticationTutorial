@@ -28,23 +28,46 @@ class SignUp extends Component {
     }
   }
 
-  submitForm() {
-    bcrypt.genSalt(11, (err, salt) => {
-      bcrypt.hash(this.state.rawPassword, salt, (err, hash) => {
-        const newUser = {...this.state.registerForm, password: hash}
-        axios.post(`${serverPath}/signup`, newUser)
-        .then(response => {
-          if (response.status === 200) {
-            this.props.history.push('/')
-          } else {
-          }
+  
+  validate() {
+    if (this.state.registerForm.username.length > 4
+      && this.state.isHuman
+      && this.state.rawPassword.length > 4) {
+        this.setState({
+          isValid: true
         })
-        .catch(error => {
+      } else {
+        this.setState({
+          isValid: false
         })
-      });
-    });
-  }
+      }
+    }
 
+    submitForm() {
+      if (this.state.isValid) {
+        bcrypt.genSalt(11, (err, salt) => {
+          bcrypt.hash(this.state.rawPassword, salt, (err, hash) => {
+            const newUser = {...this.state.registerForm, password: hash}
+            axios.post(`${serverPath}/signup`, newUser)
+            .then(response => {
+              if (response.status === 200) {
+                this.props.loginUser({ username: newUser.username, password: this.state.rawPassword })
+              } else {
+                return Promise.reject('could not signup')
+              }
+            }).then(() => {
+              if (!this.props.auth.isAuthenticated) {
+                Alert('signupError');
+              }
+            }).catch(error => {
+              Alert('signupError');
+            })
+          });
+        });
+      } else {
+        Alert('signupError');
+      }
+    }
 
 
   render() {
@@ -67,7 +90,7 @@ class SignUp extends Component {
               </button>
               <a className="navbar-brand" href="/">
                 <i className="material-icons">details</i>
-                 Test App 
+                 Test App
                 </a>
             </div>
             <div className="collapse navbar-collapse">
