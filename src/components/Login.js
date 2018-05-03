@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import serverPath from '../paths';
 import axios from 'axios';
 import Input from './Input';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/auth';
+import { Alert } from './Alert';
 
 class Login extends Component {
 
@@ -36,10 +38,17 @@ class Login extends Component {
     }
   }
 
-  submitForm() {
-    this.props.loginUser(this.state.loginForm);
+  submitForm(e) {
+    e.preventDefault();
+    this.props.loginUser(this.state.loginForm).then(() => {
+      if (this.props.auth.isAuthenticated) {
+        this.props.history.push(`/dashboard`);
+      } else {
+        console.log("Failed to log in!")
+        Alert('loginError')
+      }
+    });
   }
-
   sendSweetAlert() {
     const options = { title:"Good job!", text: "You clicked the button!", type: "success", buttonsStyling: true, confirmButtonClass: "btn btn-success"}
     this.submitButton.swal(options)
@@ -192,4 +201,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
