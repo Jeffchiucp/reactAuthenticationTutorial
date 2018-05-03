@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs'
-import serverPath from '../paths'
-import axios from 'axios'
+import { ToastContainer } from 'react-toastify';
+import { withRouter } from 'react-router'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Alert } from './Alert';
+import * as Actions from '../actions/auth';
+import bcrypt from 'bcryptjs';
+import serverPath from '../paths';
+import axios from 'axios';
 
 class SignUp extends Component {
 
