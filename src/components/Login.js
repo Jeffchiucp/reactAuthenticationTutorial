@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import serverPath from '../paths';
 import axios from 'axios';
 import Input from './Input';
+import { ToastContainer } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/auth';
@@ -55,20 +56,27 @@ class Login extends Component {
   }
 
 
-  render() {
-    return (
-      <div className="off-canvas-sidebar">
-        <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
-          <div className="container">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-              <a className="navbar-brand" href="">RubricPRO</a>
-            </div>
+    render() {
+      return (
+        <div className="off-canvas-sidebar">
+          <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
+            <div className="container">
+              <ToastContainer
+                hideProgressBar={false}
+                position={'top-center'}
+                newestOnTop={true}
+                autoClose={5000}
+                />
+                <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+                <a className="navbar-brand" href="/">
+                  <i className="material-icons">details</i>
+                  &nbsp; Testing App
+                </a>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav navbar-right">
                 <li>
