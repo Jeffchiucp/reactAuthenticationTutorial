@@ -14,7 +14,6 @@ class Login extends Component {
 
   constructor(props) {
     super(props)
-    this.sendSweetAlert = this.sendSweetAlert.bind(this)
     this.submitForm = this.submitForm.bind(this)
 
     this.state = {
@@ -50,11 +49,6 @@ class Login extends Component {
       }
     });
   }
-  sendSweetAlert() {
-    const options = { title:"Good job!", text: "You clicked the button!", type: "success", buttonsStyling: true, confirmButtonClass: "btn btn-success"}
-    this.submitButton.swal(options)
-  }
-
 
     render() {
       return (
@@ -77,67 +71,58 @@ class Login extends Component {
                   <i className="material-icons">details</i>
                   &nbsp; Testing App
                 </a>
-            <div className="collapse navbar-collapse">
-              <ul className="nav navbar-nav navbar-right">
-                <li>
-                  <Link to="/">
-                    <i className="material-icons">dashboard</i> Dashboard
-                    </Link>
-                  </li>
-                  <li className="">
-                    <Link to="/signup">
-                      <i className="material-icons">person_add</i> Sign Up
+                <div className="collapse navbar-collapse">
+                  <ul className="nav navbar-nav navbar-right">
+                    <li className="">
+                      <Link to="/signup">
+                        <i className="material-icons">person_add</i>
+                        Sign Up
                       </Link>
                     </li>
                     <li className=" active ">
                       <Link to="/login">
-                        <i className="material-icons">fingerprint</i> Login
-                        </Link>
-                      </li>
-
-                    </ul>
-                  </div>
+                        <i className="material-icons">fingerprint</i>
+                        Login
+                      </Link>
+                    </li>
+                  </ul>
                 </div>
-              </nav>
-              <div className="wrapper wrapper-full-page">
-                <div className="full-page login-page" filter-color="blue" data-image="assets/img/login.jpeg">
-                  <div className="content">
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-                          <form method="#" action="#">
-                            <div className="card card-login">
-                              <div className="card-header text-center" data-background-color="blue">
-                                <h4 className="card-title">Login</h4>
+              </div>
+            </nav>
+            <div className="wrapper wrapper-full-page">
+              <div className="full-page login-page full-page-background" filter-color="blue" data-image="/assets/img/spacex.jpg" style={{backgroundImage: `url(/assets/img/spacex.jpg)`, width: `100%`}}>
+                <div className="sidebar-background" />
 
-                                {/*<div className="social-line">
-                                  <a href="#btn" className="btn btn-just-icon btn-simple">
-                                  <i className="fa fa-facebook-square"></i>
-                                  </a>
-                                  <a href="#pablo" className="btn btn-just-icon btn-simple">
-                                  <i className="fa fa-twitter"></i>
-                                  </a>
-                                  <a href="#eugen" className="btn btn-just-icon btn-simple">
-                                  <i className="fa fa-google-plus"></i>
-                                  </a>
-                                  </div>*/}
+                <div className="content">
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
+                        <form>
+                          <div className="card card-login">
+                            <div className="card-header text-center" data-background-color="blue">
+                              <h4 className="card-title">Login</h4>
+                            </div>
 
+                            <div className="card-content">
+                              <div className="input-group">
+                                <span className="input-group-addon">
+                                  <i className="material-icons">face</i>
+                                </span>
+                                <div className="form-group label-floating">
+                                  <label className="control-label">username</label>
+                                  <input
+                                    type="text"
+                                    value={this.state.loginForm.username}
+                                    onChange={(e) => this.setState({
+                                      loginForm: {
+                                        ...this.state.loginForm,
+                                        username: e.target.value
+                                      }
+                                    })}
+                                    className="form-control" />
                                 </div>
-                                <p className="category text-center">Don't have an account?</p>
-                                <p className="category text-center">
-                                  <Link className="btn btn-info btn-round" to='/signup'> Sign Up</Link>
-                                </p>
-                                <div className="card-content">
-                                  <div className="input-group">
-                                    <span className="input-group-addon">
-                                      <i className="material-icons">face</i>
-                                    </span>
-                                    <div className="form-group label-floating">
-                                      <label className="control-label">username</label>
-                                      <input type="text" value={this.state.loginForm.username} onChange={(e) => this.setState({loginForm: {...this.state.loginForm, username: e.target.value}})} className="form-control" />
-                                    </div>
-                                  </div>
-
+                              </div>
+                              
                                   <div className="input-group">
                                     <span className="input-group-addon">
                                       <i className="material-icons">lock_outline</i>
@@ -159,30 +144,6 @@ class Login extends Component {
                     </div>
                     <footer className="footer">
                       <div className="container">
-                        {/*<nav className="pull-left">
-                          <ul>
-                          <li>
-                          <a href="#">
-                          Home
-                          </a>
-                          </li>
-                          <li>
-                          <a href="#">
-                          Company
-                          </a>
-                          </li>
-                          <li>
-                          <a href="#">
-                          Portofolio
-                          </a>
-                          </li>
-                          <li>
-                          <a href="#">
-                          Blog
-                          </a>
-                          </li>
-                          </ul>
-                          </nav>*/}
                           <p className="copyright pull-right">
                             &copy;
 
