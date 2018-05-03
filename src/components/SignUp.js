@@ -14,7 +14,6 @@ class SignUp extends Component {
 
   constructor(props) {
     super(props)
-    this.sendSweetAlert = this.sendSweetAlert.bind(this)
     this.submitForm = this.submitForm.bind(this)
 
     this.state = {
@@ -46,11 +45,6 @@ class SignUp extends Component {
     });
   }
 
-  sendSweetAlert() {
-    const options = { title:"Good job!", text: "You clicked the button!", type: "success", buttonsStyling: true, confirmButtonClass: "btn btn-success"}
-    this.submitButton.swal(options)
-  }
-
 
 
   render() {
@@ -58,6 +52,12 @@ class SignUp extends Component {
       <div className="off-canvas-sidebar">
         <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
           <div className="container">
+            <ToastContainer
+              hideProgressBar={true}
+              position={'top-center'}
+              newestOnTop={true}
+              autoClose={5000}
+              />
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
                 <span className="sr-only">Toggle navigation</span>
@@ -66,7 +66,8 @@ class SignUp extends Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <span role="img" description="emoji" aria-label="emoji">🤯</span> RubricPro
+                <i className="material-icons">details</i>
+                 Test App 
                 </a>
             </div>
             <div className="collapse navbar-collapse">
