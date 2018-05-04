@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import bcrypt from 'bcryptjs'
 import serverPath from '../paths'
 import axios from 'axios'
-import SweetAlert from 'sweetalert2-react'
 
 class SignUp extends Component {
 
@@ -31,14 +30,11 @@ class SignUp extends Component {
         axios.post(`${serverPath}/signup`, newUser)
         .then(response => {
           if (response.status === 200) {
-            console.log('User created!')
             this.props.history.push('/')
           } else {
-            console.log('Something went wrong')
           }
         })
         .catch(error => {
-          console.log('error!', error)
         })
       });
     });
