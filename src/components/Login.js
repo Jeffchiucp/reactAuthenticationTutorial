@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import serverPath from '../paths';
 import axios from 'axios';
 import Input from './Input';
+import { ToastContainer } from 'react-toastify';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/auth';
+import { Alert } from './Alert';
 
 class Login extends Component {
 
@@ -36,30 +39,44 @@ class Login extends Component {
     }
   }
 
-  submitForm() {
-    this.props.loginUser(this.state.loginForm);
+  submitForm(e) {
+    e.preventDefault();
+    this.props.loginUser(this.state.loginForm).then(() => {
+      if (this.props.auth.isAuthenticated) {
+        this.props.history.push(`/dashboard`);
+      } else {
+        console.log("Failed to log in!")
+        Alert('loginError')
+      }
+    });
   }
-
   sendSweetAlert() {
     const options = { title:"Good job!", text: "You clicked the button!", type: "success", buttonsStyling: true, confirmButtonClass: "btn btn-success"}
     this.submitButton.swal(options)
   }
 
 
-  render() {
-    return (
-      <div className="off-canvas-sidebar">
-        <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
-          <div className="container">
-            <div className="navbar-header">
-              <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-              </button>
-              <a className="navbar-brand" href="">RubricPRO</a>
-            </div>
+    render() {
+      return (
+        <div className="off-canvas-sidebar">
+          <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
+            <div className="container">
+              <ToastContainer
+                hideProgressBar={false}
+                position={'top-center'}
+                newestOnTop={true}
+                autoClose={5000}
+                />
+                <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                  <span className="sr-only">Toggle navigation</span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                  <span className="icon-bar"></span>
+                </button>
+                <a className="navbar-brand" href="/">
+                  <i className="material-icons">details</i>
+                  &nbsp; Testing App
+                </a>
             <div className="collapse navbar-collapse">
               <ul className="nav navbar-nav navbar-right">
                 <li>
@@ -192,4 +209,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators(Actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
