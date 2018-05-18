@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import bcrypt from 'bcryptjs'
-import serverPath from '../paths'
-import axios from 'axios'
+import { ToastContainer } from 'react-toastify';
+import { withRouter } from 'react-router'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Alert } from './Alert';
+import * as Actions from '../actions/auth';
+import bcrypt from 'bcryptjs';
+import serverPath from '../paths';
+import axios from 'axios';
 
 class SignUp extends Component {
 
   constructor(props) {
     super(props)
-    this.sendSweetAlert = this.sendSweetAlert.bind(this)
     this.submitForm = this.submitForm.bind(this)
 
     this.state = {
@@ -23,28 +28,46 @@ class SignUp extends Component {
     }
   }
 
-  submitForm() {
-    bcrypt.genSalt(11, (err, salt) => {
-      bcrypt.hash(this.state.rawPassword, salt, (err, hash) => {
-        const newUser = {...this.state.registerForm, password: hash}
-        axios.post(`${serverPath}/signup`, newUser)
-        .then(response => {
-          if (response.status === 200) {
-            this.props.history.push('/')
-          } else {
-          }
+  
+  validate() {
+    if (this.state.registerForm.username.length > 4
+      && this.state.isHuman
+      && this.state.rawPassword.length > 4) {
+        this.setState({
+          isValid: true
         })
-        .catch(error => {
+      } else {
+        this.setState({
+          isValid: false
         })
-      });
-    });
-  }
+      }
+    }
 
-  sendSweetAlert() {
-    const options = { title:"Good job!", text: "You clicked the button!", type: "success", buttonsStyling: true, confirmButtonClass: "btn btn-success"}
-    this.submitButton.swal(options)
-  }
-
+    submitForm() {
+      if (this.state.isValid) {
+        bcrypt.genSalt(11, (err, salt) => {
+          bcrypt.hash(this.state.rawPassword, salt, (err, hash) => {
+            const newUser = {...this.state.registerForm, password: hash}
+            axios.post(`${serverPath}/signup`, newUser)
+            .then(response => {
+              if (response.status === 200) {
+                this.props.loginUser({ username: newUser.username, password: this.state.rawPassword })
+              } else {
+                return Promise.reject('could not signup')
+              }
+            }).then(() => {
+              if (!this.props.auth.isAuthenticated) {
+                Alert('signupError');
+              }
+            }).catch(error => {
+              Alert('signupError');
+            })
+          });
+        });
+      } else {
+        Alert('signupError');
+      }
+    }
 
 
   render() {
@@ -52,6 +75,12 @@ class SignUp extends Component {
       <div className="off-canvas-sidebar">
         <nav className="navbar navbar-primary navbar-transparent navbar-absolute">
           <div className="container">
+            <ToastContainer
+              hideProgressBar={true}
+              position={'top-center'}
+              newestOnTop={true}
+              autoClose={5000}
+              />
             <div className="navbar-header">
               <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
                 <span className="sr-only">Toggle navigation</span>
@@ -60,7 +89,8 @@ class SignUp extends Component {
                 <span className="icon-bar"></span>
               </button>
               <a className="navbar-brand" href="/">
-                <span role="img" description="emoji" aria-label="emoji">🤯</span> RubricPro
+                <i className="material-icons">details</i>
+                 Test App
                 </a>
             </div>
             <div className="collapse navbar-collapse">
